@@ -1,38 +1,27 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../features/authSlice';
 import { redirect } from 'react-router-dom';
+// import { fetchUserLogin } from '../../apiService';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirectUser, setRedirectUser] = useState(false); // État pour la redirection
   const dispatch = useDispatch();
+  const data = useSelector((state) => state.data);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       // Envoyer une requête POST à l'API de login avec fetch
-      const response = await fetch('http://localhost:3001/api/v1/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
 
-      if (!response.ok) {
-        // Gérer les cas où la requête échoue (par exemple, problème de réseau ou d'authentification)
-        throw new Error('Erreur lors de la connexion');
-      }
-
-      const data = await response.json();
+      // const data = await fetchUserLogin(email, password);
 
       // Si la requête est réussie, mettre à jour l'état d'authentification dans Redux
-      dispatch(login(data.token));
-
+      dispatch(login(data));
       // Rediriger l'utilisateur vers la page User
       setRedirectUser(true);
     } catch (error) {
@@ -46,34 +35,6 @@ function Login() {
       return redirect('/user');
     }
   };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   // Envoyer une action Redux pour tenter de se connecter
-  //   dispatch(login({ username, password }));
-  // };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     // Envoyer une requête POST à l'API de login
-  //     const response = await axios.post('http://localhost:3001/api/v1/user/login', {
-  //       email,
-  //       password,
-  //     });
-
-  //     // Si la requête est réussie, mettre à jour l'état d'authentification dans Redux
-  //     dispatch(login(response.data.token));
-
-  //     // Rediriger l'utilisateur vers la page User (vous devez implémenter cette fonctionnalité)
-  //     // history.push('/user');
-  //   } catch (error) {
-  //     // Gérer les erreurs de requête
-  //     console.error('Erreur lors de la soumission du formulaire de connexion :', error);
-  //     // Afficher un message d'erreur à l'utilisateur si nécessaire
-  //   }
-  // };
 
   return (
     <main className='main bg-dark'>

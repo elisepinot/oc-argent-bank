@@ -7,5 +7,3 @@ export const store = configureStore({
     auth: authSlice,
   },
 });
-
-// export default store;
