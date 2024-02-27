@@ -8,7 +8,6 @@ function User() {
       <Header />
       <Account />
       <Footer />
-h1
     </>
   );
 }

@@ -1,4 +1,9 @@
+// import { useSelector } from 'react-redux';
+
 function Account() {
+  // const userFirstName = useSelector((state) => state.user.firstName);
+
+  // console.log(userFirstName);
   return (
     <main className='main bg-dark'>
       <div className='header'>

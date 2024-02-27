@@ -6,6 +6,10 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   token: null,
+  error: null,
+  status: 'idle', // Ajout de 'status' pour suivre l'état de la requête, pratique courante dans les applications Redux qui gèrent des requêtes asynchrones. idle : état initial avant que toute action soit prise. Aucune requête n'a encore été initiée.
+
+  rememberMe: false,
 };
 
 //Le slice nommé 'auth' contient 2 reducers : login et logout
@@ -13,31 +17,40 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state, action) {
-      //Je peux déstructurer l'objet action.payload
-      const { user, token } = action.payload;
+    toggleRememberMe(state, action) {
+      state.rememberMe = action.payload;
+    },
+    loginSuccess(state, action) {
       state.isAuthenticated = true;
-      state.user = user;
-      state.token = token;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
     },
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
+      state.status = 'idle';
+      state.rememberMe = false;
+      localStorage.removeItem('token'); // Nettoyage du localStorage lors de la déconnexion
     },
   },
   extraReducers: (builder) => {
-    builder
-      // .addCase(loginThunk.pending, (state, action) => {
-      //   // Logique pour traiter l'action pending
-      // })
-      .addCase(loginThunk.fulfilled, (state, action) => {
-        return action.payload.data;
-      });
+    builder.addCase(loginThunk.fulfilled, (state, action) => {
+      state.token = action.payload.token;
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      // return action.payload.data;
+    });
+    // .addCase(fetchUserThunk.fulfilled, (state, action) => {
+    //   state.user = action.payload.body;
+    // })
+    // .addCase(updateUserThunk.fulfilled, (state, action) => {
+    //   state.user = action.payload.body;
+    // });
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { toggleRememberMe, loginSuccess, logout } = authSlice.actions;
 
 export default authSlice.reducer;
 

@@ -1,38 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../features/authSlice';
-import { redirect } from 'react-router-dom';
+import { loginThunk } from '../../features/authThunk';
+import { useNavigate } from 'react-router-dom';
+import { toggleRememberMe } from '../../features/authSlice';
+
 // import { fetchUserLogin } from '../../apiService';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [redirectUser, setRedirectUser] = useState(false); // État pour la redirection
+  // const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const handleRememberMeChange = (event) => {
+    //Lorsque le state de la checkbox change, je dispatche l'action avec la nouvelle valeur (true ou false)
+    dispatch(toggleRememberMe(event.target.checked));
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/user');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      // Envoyer une requête POST à l'API de login avec fetch
-
-      // const data = await fetchUserLogin(email, password);
-
-      // Si la requête est réussie, mettre à jour l'état d'authentification dans Redux
-      dispatch(login(data));
-      // Rediriger l'utilisateur vers la page User
-      setRedirectUser(true);
+      // Trigger le thunk qui gère le call API pour vérifier les identifiants
+      dispatch(loginThunk({ email, password }));
     } catch (error) {
       // Gérer les erreurs de requête
       console.error('Erreur lors de la soumission du formulaire de connexion :', error);
-      // Afficher un message d'erreur à l'utilisateur si nécessaire
-    }
-
-    // Si l'état de redirection est vrai, rediriger l'utilisateur vers la page User
-    if (redirectUser) {
-      return redirect('/user');
     }
   };
 
@@ -64,7 +65,7 @@ function Login() {
             />
           </div>
           <div className='input-remember'>
-            <input type='checkbox' id='remember-me' />
+            <input type='checkbox' id='remember-me' onChange={handleRememberMeChange} />
             <label htmlFor='remember-me'>Remember me</label>
           </div>
           {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}

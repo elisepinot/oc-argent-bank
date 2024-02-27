@@ -1,16 +1,32 @@
-import { fetchUserLogin } from '../apiService';
+import { loginUser } from '../apiService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// Définition de vos thunks en utilisant les fonctions du service API
-export const loginThunk = createAsyncThunk('auth/login', async ({ email, password }) => {
-  // ({ email, password, rememberMe })
-  const data = await fetchUserLogin(email, password);
+// Création d'un thunk car besoin d'effectuer une requête asynchrone : call API pour authentifier l'utilisateur
+//rejectWithValue : fonctionne avec createAsyncThunk. Permet à l'app de réagir aux erreurs (arffichage d'un message à l'utilisateur par exemple)
+export const loginThunk = createAsyncThunk(
+  'auth/login',
+  async ({ email, password }, { rejectWithValue, getState }) => {
+    // ({ email, password, rememberMe })
+    try {
+      const data = await loginUser(email, password);
 
-  // if (rememberMe) {
-  //   localStorage.setItem("currentUser", JSON.stringify(data));
-  // } else {
-  //   sessionStorage.setItem("currentUser", JSON.stringify(data));
-  // }
+      //Vérifier si l'option Remember me est activée
+      if (getState().auth.rememberMe) {
+        localStorage.setItem('token', data.token);
+        console.log('La case Remember me est cochée');
+      } else {
+        sessionStorage.setItem('token', data.token);
+      }
+      return data;
+    } catch (error) {
+      // Propager l'erreur au store Redux
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
-  return data;
-});
+// if (rememberMe) {
+//   localStorage.setItem("currentUser", JSON.stringify(data));
+// } else {
+//   sessionStorage.setItem("currentUser", JSON.stringify(data));
+// }
