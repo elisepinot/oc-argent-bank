@@ -1,6 +1,13 @@
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Account() {
+  const userToken = useSelector((state) => state.auth.token);
+  // const userData = useSelector((state) => state.auth.user);
+  const userAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  console.log('Token', userToken);
+  // console.log('User Data', userData);
+  console.log('userAuthenticated', userAuthenticated);
   // const userFirstName = useSelector((state) => state.user.firstName);
 
   // console.log(userFirstName);

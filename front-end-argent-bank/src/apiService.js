@@ -1,3 +1,5 @@
+//Api service : on traite les fonctions de connexion à la BDD dans un autre fichier / fichier à part
+
 const BASE_URL = 'http://localhost:3001/api/v1';
 
 //API call to authenticate the user

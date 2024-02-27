@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchUserThunk, updateUserThunk } from './userProfileThunk';
 
 const initialState = {
-  profile: null,
+  firstName: null,
+  lastName: null,
   //   isLoading: false,
   //   error: null,
 };
@@ -13,12 +14,13 @@ const userProfileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-
       .addCase(fetchUserThunk.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.firstName = action.payload.body.firstName;
+        state.lastName = action.payload.body.lastName;
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.firstName = action.payload.body.firstName;
+        state.lastName = action.payload.body.lastName;
       });
   },
 });

@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../features/authThunk';
 import { useNavigate } from 'react-router-dom';
-import { toggleRememberMe } from '../../features/authSlice';
+// import { toggleRememberMe } from '../../features/authSlice';
+// import { fetchUserThunk } from '../../features/userProfileThunk';
 
 // import { fetchUserLogin } from '../../apiService';
 function Login() {
@@ -15,10 +16,10 @@ function Login() {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const handleRememberMeChange = (event) => {
-    //Lorsque le state de la checkbox change, je dispatche l'action avec la nouvelle valeur (true ou false)
-    dispatch(toggleRememberMe(event.target.checked));
-  };
+  // const handleRememberMeChange = (event) => {
+  //   //Lorsque le state de la checkbox change, je dispatche l'action avec la nouvelle valeur (true ou false)
+  //   dispatch(toggleRememberMe(event.target.checked));
+  // };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,6 +32,13 @@ function Login() {
     try {
       // Trigger le thunk qui gère le call API pour vérifier les identifiants
       dispatch(loginThunk({ email, password }));
+
+      // console.log('state.isAuthenticated', state.isAuthenticated);
+      // state.isAuthenticated = true;
+      // state.token = action.payload.token;
+      // state.user = action.payload.user;
+
+      // dispatch(fetchUserThunk({ email, password }));
     } catch (error) {
       // Gérer les erreurs de requête
       console.error('Erreur lors de la soumission du formulaire de connexion :', error);
@@ -65,7 +73,8 @@ function Login() {
             />
           </div>
           <div className='input-remember'>
-            <input type='checkbox' id='remember-me' onChange={handleRememberMeChange} />
+            <input type='checkbox' id='remember-me' />
+            {/* onChange={handleRememberMeChange} */}
             <label htmlFor='remember-me'>Remember me</label>
           </div>
           {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}

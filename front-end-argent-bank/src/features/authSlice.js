@@ -8,8 +8,7 @@ const initialState = {
   token: null,
   error: null,
   status: 'idle', // Ajout de 'status' pour suivre l'état de la requête, pratique courante dans les applications Redux qui gèrent des requêtes asynchrones. idle : état initial avant que toute action soit prise. Aucune requête n'a encore été initiée.
-
-  rememberMe: false,
+  // rememberMe: false,
 };
 
 //Le slice nommé 'auth' contient 2 reducers : login et logout
@@ -17,12 +16,12 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    toggleRememberMe(state, action) {
-      state.rememberMe = action.payload;
-    },
+    // toggleRememberMe(state, action) {
+    //   state.rememberMe = action.payload;
+    // },
     loginSuccess(state, action) {
       state.isAuthenticated = true;
-      state.token = action.payload.token;
+      state.token = action.payload.body.token;
       state.user = action.payload.user;
     },
     logout(state) {
@@ -30,13 +29,13 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.status = 'idle';
-      state.rememberMe = false;
+      // state.rememberMe = false;
       localStorage.removeItem('token'); // Nettoyage du localStorage lors de la déconnexion
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginThunk.fulfilled, (state, action) => {
-      state.token = action.payload.token;
+      state.token = action.payload.body.token;
       state.user = action.payload;
       state.isAuthenticated = true;
       // return action.payload.data;
@@ -50,7 +49,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { toggleRememberMe, loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, logout } = authSlice.actions;
 
 export default authSlice.reducer;
 
