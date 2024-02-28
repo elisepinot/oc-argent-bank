@@ -4,8 +4,6 @@ import { fetchUserThunk, updateUserThunk } from './userProfileThunk';
 const initialState = {
   firstName: null,
   lastName: null,
-  //   isLoading: false,
-  //   error: null,
 };
 
 const userProfileSlice = createSlice({

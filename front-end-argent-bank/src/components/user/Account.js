@@ -1,26 +1,72 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserThunk } from '../../features/userProfileThunk';
+import { useState } from 'react';
 
 function Account() {
+  const userFirstName = useSelector((state) => state.userProfile.firstName);
+  const userLastName = useSelector((state) => state.userProfile.lastName);
+  const dispatch = useDispatch();
+  const [editView, setEditView] = useState(false);
   const userToken = useSelector((state) => state.auth.token);
-  // const userData = useSelector((state) => state.auth.user);
-  const userAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [firstName, setFirstName] = useState(userFirstName);
+  const [lastName, setLastName] = useState(userLastName);
 
-  console.log('Token', userToken);
-  // console.log('User Data', userData);
-  console.log('userAuthenticated', userAuthenticated);
-  // const userFirstName = useSelector((state) => state.user.firstName);
+  const updateProfile = async () => {
+    setEditView(true);
+  };
 
-  // console.log(userFirstName);
+  const handleSave = async () => {
+    dispatch(updateUserThunk({ token: userToken, firstName, lastName }));
+    setEditView(false); // Revenir à la vue normale après la mise à jour
+  };
+
+  const handleCancel = () => {
+    // Réinitialiser les champs et revenir à la vue normale
+    setFirstName(userFirstName);
+    setLastName(userLastName);
+    setEditView(false);
+  };
+  console.log(userFirstName, userLastName);
+
   return (
     <main className='main bg-dark'>
-      <div className='header'>
-        <h1>
-          Welcome back
-          <br />
-          Tony Jarvis!
-        </h1>
-        <button className='edit-button'>Edit Name</button>
-      </div>
+      {!editView ? (
+        <div className='header'>
+          <h1>
+            Welcome back
+            <br />
+            {userFirstName} {userLastName}
+          </h1>
+          <button className='edit-button' onClick={updateProfile}>
+            Edit Name
+          </button>
+        </div>
+      ) : (
+        <div className='header'>
+          <h1>Welcome back</h1>
+          <div className='edit-form'>
+            <input
+              type='text'
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder={userFirstName}
+            />
+            <input
+              type='text'
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder={userLastName}
+            />
+            <div className='edit-buttons'>
+              <button className='cancel-button' onClick={handleCancel}>
+                Cancel
+              </button>
+              <button className='save-button' onClick={handleSave}>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <h2 className='sr-only'>Accounts</h2>
       <section className='account'>
         <div className='account-content-wrapper'>

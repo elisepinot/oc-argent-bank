@@ -11,7 +11,9 @@ export const loginThunk = createAsyncThunk(
       const data = await loginUser(email, password);
       return data;
     } catch (error) {
-      // Propager l'erreur au store Redux
+      // Affiche l'erreur en console
+      console.error(error.message);
+      //Propage l'erreur au store Redux
       return rejectWithValue(error.message);
     }
   },

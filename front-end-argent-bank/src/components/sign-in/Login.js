@@ -23,13 +23,6 @@ function Login() {
     try {
       // Trigger le thunk qui gère le call API pour vérifier les identifiants
       dispatch(loginThunk({ email, password }));
-
-      // console.log('state.isAuthenticated', state.isAuthenticated);
-      // state.isAuthenticated = true;
-      // state.token = action.payload.token;
-      // state.user = action.payload.user;
-
-      // dispatch(fetchUserThunk({ email, password }));
     } catch (error) {
       // Gérer les erreurs de requête
       console.error('Erreur lors de la soumission du formulaire de connexion :', error);
