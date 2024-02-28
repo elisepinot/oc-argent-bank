@@ -9,7 +9,7 @@ function User() {
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.auth.token);
 
-  //Utilisation de useEffect pour déclencher le fetchUserThunk dès que User est monté, mais uniquement si userToken existe.
+  //Utilisation de useEffect pour déclencher le fetchUserThunk dès que User est monté, après avoir vérifié que userToken existe.
   useEffect(() => {
     if (userToken) {
       dispatch(fetchUserThunk(userToken));

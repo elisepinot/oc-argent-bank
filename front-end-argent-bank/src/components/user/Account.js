@@ -26,7 +26,6 @@ function Account() {
     setLastName(userLastName);
     setEditView(false);
   };
-  console.log(userFirstName, userLastName);
 
   return (
     <main className='main bg-dark'>

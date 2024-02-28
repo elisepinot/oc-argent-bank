@@ -18,8 +18,7 @@ export const fetchUserThunk = createAsyncThunk(
   },
 );
 
-//Quand le log in est effectué, j'appelle la 2e fonction
-
+//Quand le login est effectué, j'appelle la 2e fonction
 export const updateUserThunk = createAsyncThunk(
   'user/updateProfile',
   async ({ token, firstName, lastName }, { rejectWithValue }) => {
