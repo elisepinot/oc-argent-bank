@@ -11,6 +11,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  //Récupérer l'erreur retournée par rejectWithValue dans le thunk
+  const error = useSelector((state) => state.auth.error);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -18,15 +20,22 @@ function Login() {
     }
   }, [isAuthenticated, navigate]);
 
+  //Fonction handleSubmit avec bloc try/catch
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     // Trigger le thunk qui gère le call API pour vérifier les identifiants
+  //     dispatch(loginThunk({ email, password }));
+  //   } catch (error) {
+  //     // Gérer les erreurs de requête
+  //     console.error('Erreur lors de la soumission du formulaire de connexion :', error);
+  //   }
+  // };
+
+  //Fonction handleSubmit sans le bloc try/catch
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      // Trigger le thunk qui gère le call API pour vérifier les identifiants
-      dispatch(loginThunk({ email, password }));
-    } catch (error) {
-      // Gérer les erreurs de requête
-      console.error('Erreur lors de la soumission du formulaire de connexion :', error);
-    }
+    dispatch(loginThunk({ email, password }));
   };
 
   return (
@@ -63,6 +72,7 @@ function Login() {
           <button type='submit' className='sign-in-button'>
             Sign In
           </button>
+          {error && <div className='error'>{error}</div>}
         </form>
       </section>
     </main>

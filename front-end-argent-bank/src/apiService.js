@@ -17,7 +17,7 @@ export const loginUser = async (email, password) => {
   });
 
   if (!response.ok) {
-    throw new Error(`Problème de connexion : l'utilisateur n'existe pas`);
+    throw new Error(`Login failed: user not found. Status code: ${response.status}`);
   }
 
   //J'utilise la méthode json pour convertir la chaine de caractères JSON en objet JavaScript

@@ -70,6 +70,7 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
       produces:
         - application/json
       responses:
@@ -93,6 +94,7 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
         - in: body
           name: body
           description: Update user profile attributes
@@ -110,12 +112,121 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /user/{accountId}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Retrieve transactions for a specific account for the current month
+      description: Returns a list of all transactions for the current month for a specific account.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+        - in: query
+          name: month
+          schema:
+          type: string
+          description: The current month for which transactions are fetched, formatted as MM-YYYY.
+          required: true
+        - in: path
+          name: accountId
+          required: true
+          schema:
+          type: string
+          description: The unique identifier for the account whose transactions are to be retrieved.      
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '401':
+          description: Unauthorized access, login required.
+        '404':
+          description: Account not found.
+        '500':
+          description: Internal Server Error.
+  /user/{accountId}/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Retrieve details of a specific transaction
+      description: Returns detailed information for a specific transaction.
+      parameters:
+        - name: accountId
+          in: path
+          description: The unique identifier for the account.
+          required: true
+          type: string
+        - name: transactionId
+          in: path
+          description: The unique identifier for the transaction whose details are to be retrieved.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Detailed information about the transaction.
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '401':
+          description: Unauthorized access, login required.
+        '404':
+          description: Transaction not found.
+        '500':
+          description: Internal Server Error.
+    patch:
+      tags:
+        - Transactions
+      summary: Add, update or clear information of a specific transaction
+      description: Allows the user to add, update or clear the category and additional notes of a specific transaction.
+      security:
+        - Bearer: []
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: string
+          description: The unique identifier for the account.
+        - name: transactionId
+          in: path
+          required: true
+          type: string
+          description: The unique identifier for the transaction to be updated.
+        - in: body
+          name: transactionUpdate
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionUpdate'
+      responses:
+        '200':
+          description: Transaction information updated successfully.
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '400':
+          description: Invalid input, object invalid.
+        '401':
+          description: Unauthorized access, login required.
+        '404':
+          description: Transaction not found.
+        '500':
+          description: Internal Server Error.
+#Cette section définit les schémas de sécurité utilisés dans l'API
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
 definitions:
+#Cette section définit des structures de données communes qui peut être réutilisées dans les différentes parties de l'API. Chaque schéma de cette section décrit la structure d'un type d'objet spécifique, définissant ses propriétés et les types de ces propriétés. Peut inclure des objets renvoyés comme réponses de l'API ou qui sont acceptés comme données de requête.
   User:
     properties:
       email:
@@ -164,3 +275,45 @@ definitions:
         type: string
       lastName:
         type: string
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+        format: date-time
+        description: The date of the transaction
+      description:
+        type: string
+        description: The description of the transaction
+      amount:
+        type: number
+        description: The amount of the transaction
+      balance:
+        type: number
+        description: The balance of the account after the transaction
+      accountId:
+        type: string
+        description: The ID of the account the transaction belongs to
+  TransactionDetails:
+    type: object
+    properties:
+      transactionType:
+        type: string
+        description: The type of the transaction (electronic, etc.)
+      category:
+        type: string
+        description: The category of the transaction
+      notes:
+        type: string
+        description: Additional notes about the transaction
+  TransactionUpdate:
+    type: object
+    properties:
+      category:
+        type: string
+        description: The new category of the transaction. Can be null or empty to remove the category.
+      notes:
+        type: string
+        description: Additional notes about the transaction. Can be null or empty to remove the notes.

@@ -6,6 +6,7 @@ const initialState = {
   isAuthenticated: false,
   token: null,
   status: 'idle', // Ajout de 'status' pour suivre l'état de la requête, pratique courante dans les applications Redux qui gèrent des requêtes asynchrones. idle : état initial avant que toute action soit prise. Aucune requête n'a encore été initiée.
+  error: null,
 };
 
 //Le slice nommé 'auth' contient 2 reducers : login et logout
@@ -17,6 +18,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       state.status = 'idle';
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -24,7 +26,12 @@ const authSlice = createSlice({
       state.token = action.payload.body.token;
       state.isAuthenticated = true;
       state.status = 'succeeded';
-    });
+      state.error = null;
+    }),
+      builder.addCase(loginThunk.rejected, (state, action) => {
+        state.error = action.payload; // Stocke l'erreur renvoyée par rejectWithValue
+        state.isAuthenticated = false;
+      });
   },
 });
 

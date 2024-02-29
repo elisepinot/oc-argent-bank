@@ -2,7 +2,7 @@ import { loginUser } from '../apiService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Création d'un thunk car besoin d'effectuer une requête asynchrone : call API pour authentifier l'utilisateur
-//rejectWithValue : fonctionne avec createAsyncThunk. Permet à l'app de réagir aux erreurs (arffichage d'un message à l'utilisateur par exemple)
+//rejectWithValue : fonctionne avec createAsyncThunk et permet de fournir un payload personnalisé lorsque l'action est rejetée -> peut ensuite être utilsié dans le reducer pour gérer l'erreur.
 
 export const loginThunk = createAsyncThunk(
   'auth/login',
@@ -11,9 +11,7 @@ export const loginThunk = createAsyncThunk(
       const data = await loginUser(email, password);
       return data;
     } catch (error) {
-      // Affiche l'erreur en console
-      console.error(error.message);
-      //Propage l'erreur au store Redux
+      //Propage l'erreur au store Redux (authSlice)
       return rejectWithValue(error.message);
     }
   },
