@@ -15,7 +15,7 @@ function Header() {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
-    navigate('/signin');
+    navigate('/');
   };
 
   return (
