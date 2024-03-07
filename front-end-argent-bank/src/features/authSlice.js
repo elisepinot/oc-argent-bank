@@ -26,12 +26,12 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.status = 'succeeded';
       state.error = null;
-    }),
-      builder.addCase(loginThunk.rejected, (state, action) => {
-        state.error = action.payload; // Stocke l'erreur renvoyée par rejectWithValue
-        state.status = 'failed';
-        state.isAuthenticated = false;
-      });
+    });
+    builder.addCase(loginThunk.rejected, (state, action) => {
+      state.error = action.payload; // Stocke l'erreur renvoyée par rejectWithValue
+      state.status = 'failed';
+      state.isAuthenticated = false;
+    });
   },
 });
 
