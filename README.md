@@ -1,6 +1,6 @@
-# Project #10 - Argent Bank API
+# Project #13 - Argent Bank API
 
-This codebase contains the code needed to run the backend for Argent Bank.
+This codebase contains the code needed to run the backend for Argent Bank and the frontend
 
 ## Getting Started
 
@@ -28,22 +28,42 @@ mongo --version
 1. Open a terminal window in the cloned project
 1. Run the following commands:
 
+#### Run the server
+
 ```bash
+# Go to the back-end folder
+cd back-end-argent-bank
+
 # Install dependencies
 npm install
 
 # Start local dev server
 npm run dev:server
 
-# Populate database with two users
-npm run populate-db
 ```
 
-Your server should now be running at http://locahost:3001 and you will now have two users in your MongoDB database!
+Your server should now be running at http://locahost:3001.
+
+#### Launch the app
+
+1. Open a new terminal window in the cloned project
+1. Run the following commands:
+
+```bash
+# Go to the front-end folder
+cd front-end-argent-bank
+
+# Install dependencies
+npm install
+
+# Launch the app
+npm run start
+
+```
 
 ## Populated Database Data
 
-Once you run the `populate-db` script, you should have two users in your database:
+There are two users in your database:
 
 ### Tony Stark
 

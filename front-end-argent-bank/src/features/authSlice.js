@@ -9,7 +9,6 @@ const initialState = {
   error: null,
 };
 
-//Le slice nommé 'auth' contient 2 reducers : login et logout
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -30,6 +29,7 @@ const authSlice = createSlice({
     }),
       builder.addCase(loginThunk.rejected, (state, action) => {
         state.error = action.payload; // Stocke l'erreur renvoyée par rejectWithValue
+        state.status = 'failed';
         state.isAuthenticated = false;
       });
   },

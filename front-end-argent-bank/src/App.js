@@ -1,4 +1,4 @@
-import './sass/style.css';
+import './style/style.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/Home';
 import SignIn from './pages/sign-in/SignIn';
@@ -12,7 +12,6 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/signin' element={<SignIn />}></Route>
-          {/* <Route path='/user' element={<User />}></Route> */}
           <Route
             path='/user'
             element={

@@ -20,22 +20,15 @@ function Login() {
     }
   }, [isAuthenticated, navigate]);
 
-  //Fonction handleSubmit avec bloc try/catch
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     // Trigger le thunk qui gère le call API pour vérifier les identifiants
-  //     dispatch(loginThunk({ email, password }));
-  //   } catch (error) {
-  //     // Gérer les erreurs de requête
-  //     console.error('Erreur lors de la soumission du formulaire de connexion :', error);
-  //   }
-  // };
-
-  //Fonction handleSubmit sans le bloc try/catch
+  // Fonction handleSubmit avec bloc try/catch
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(loginThunk({ email, password }));
+    try {
+      // Trigger le thunk qui gère le call API pour vérifier les identifiants
+      dispatch(loginThunk({ email, password }));
+    } catch (error) {
+      console.error('Erreur lors de la soumission du formulaire de connexion :', error);
+    }
   };
 
   return (

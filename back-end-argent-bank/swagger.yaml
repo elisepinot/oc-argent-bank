@@ -128,14 +128,12 @@ paths:
           type: string
         - in: query
           name: month
-          schema:
           type: string
           description: The current month for which transactions are fetched, formatted as MM-YYYY.
           required: true
         - in: path
           name: accountId
           required: true
-          schema:
           type: string
           description: The unique identifier for the account whose transactions are to be retrieved.      
       produces:
