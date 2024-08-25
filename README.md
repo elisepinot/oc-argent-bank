@@ -2,6 +2,20 @@
 
 This codebase contains the code needed to run the backend for Argent Bank and the frontend
 
+
+## Objectives of the project
+
+Connect to a Back End with an API Using React
+Remede Agency needs to complete their website's code to communicate with the back end. 
+Tasks: write REST API calls to connect the front end to the back end of the website and model new API endpoints.
+
+
+### Skills acquired in this project
+* Interact with an API
+* Authenticate to a secure API
+* Create API models
+* Implement a state management system in a React app
+
 ## Getting Started
 
 ### Prerequisites
